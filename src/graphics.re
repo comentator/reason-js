@@ -56,8 +56,15 @@ module Graphics = {
         PipeLine.set(gl, pipe);
     };
 
-    let setIndexBuffer = fun(gl, indexBuffer: IndexBuffer.indexBuffer) => {
+    let setIndexBuffer = fun (gl, indexBuffer: IndexBuffer.indexBuffer) => {
         IndexBuffer.set(gl, indexBuffer);
+    };
+
+    let drawIndexedVertices = fun (gl, start: int, count: int) => {
+        /* var type = SystemImpl.elementIndexUint == null ? GL.UNSIGNED_SHORT : GL.UNSIGNED_INT; */
+        /* ToDo: indicesCount */
+        let intType = GL._UNSIGNED_INT;
+        GL.(drawElements gl GL._TRIANGLES count intType (start * 2));
     };
 
 };
