@@ -52,6 +52,11 @@ module GL = {
   let _DST_ALPHA : int                      = 0x0304;
   let _ONE_MINUS_DST_ALPHA : int            = 0x0305;
 
+  /* CullFaceMode */
+  let _FRONT : int                          = 0x0404;
+  let _BACK : int                           = 0x0405;
+  let _FRONT_AND_BACK : int                 = 0x0408;
+
   /* void clear(GLbitfield mask); */
   external clear : glT => int => unit = "clear" [@@bs.send];
 
@@ -61,8 +66,14 @@ module GL = {
   /* void enable(GLenum cap); */
   external enable : glT => int => unit = "enable" [@@bs.send];
 
+  /* void disable(GLenum cap); */
+  external disable : glT => int => unit = "disable" [@@bs.send];
+
   /* void blendFunc(GLenum sfactor, GLenum dfactor); */
   external blendFunc: glT => int => int => unit = "blendFunc" [@@bs.send];
+
+  /* void cullFace(GLenum mode); */
+  external cullFace: glT => int => unit = "cullFace" [@@bs.send];
 };
 
 module Document = {
