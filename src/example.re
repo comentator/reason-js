@@ -4,12 +4,26 @@ open ReasonJs;
 let canvas = Document.(getElementById "my-canvas");
 let gl = Document.(getContext canvas "webgl");
 
+
+let vertexShader = "attribute vec3 pos;" ^
+"void main() { " ^
+"    gl_Position = vec4(pos.x, pos.y, 0.5, 1.0); " ^
+"}";
+
+let fragmentShader = "void main() {" ^
+"    gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);" ^
+"}";
+
+let pipe = PipeLine.make(gl, vertexShader, fragmentShader);
+PipeLine.compile(gl, pipe);
+
 let rec render = fun () => {
     Window.(requestAnimationFrame window render);
 
     Graphics.begin_(gl);
     let c : Graphics.color = {r: 0.5, g: 0.3, b: 1.0, a: 1.0};
     Graphics.clear(gl, c);
+    Graphics.setPipeline(gl, pipe);
 };
 
 Window.(requestAnimationFrame window render);
