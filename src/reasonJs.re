@@ -23,15 +23,31 @@ module Math = {
   external random : unit => float = "Math.random" [@@bs.val];
 };
 
+module Uint32Array = {
+  type t;
+  external make : array int => t = "Uint32Array" [@@bs.new];
+};
+
 module GL = {
   type glT;
   type programT;
   type shaderT;
+  type bufferT;
 
   /* ClearBufferMask */
   let _DEPTH_BUFFER_BIT : int               = 0x00000100;
   let _STENCIL_BUFFER_BIT : int             = 0x00000400;
   let _COLOR_BUFFER_BIT : int               = 0x00004000;
+
+  /* BeginMode */
+  let _POINTS : int                         = 0x0000;
+  let _LINES : int                          = 0x0001;
+  let _LINE_LOOP : int                      = 0x0002;
+  let _LINE_STRIP : int                     = 0x0003;
+  let _TRIANGLES : int                      = 0x0004;
+  let _TRIANGLE_STRIP : int                 = 0x0005;
+  let _TRIANGLE_FAN : int                   = 0x0006;
+
 
   /* TEXTURE_2D */
   let _CULL_FACE : int                      = 0x0B44;
@@ -63,6 +79,16 @@ module GL = {
   let _FRAGMENT_SHADER : int                  = 0x8B30;
   let _VERTEX_SHADER : int                    = 0x8B31;
 
+  /* Buffer Objects */
+  let _ARRAY_BUFFER : int                   = 0x8892;
+  let _ELEMENT_ARRAY_BUFFER : int           = 0x8893;
+  let _ARRAY_BUFFER_BINDING : int           = 0x8894;
+  let _ELEMENT_ARRAY_BUFFER_BINDING : int   = 0x8895;
+
+  let _STREAM_DRAW : int                    = 0x88E0;
+  let _STATIC_DRAW : int                    = 0x88E4;
+  let _DYNAMIC_DRAW : int                   = 0x88E8;
+
   /* void clear(GLbitfield mask); */
   external clear : glT => int => unit = "clear" [@@bs.send];
 
@@ -81,10 +107,9 @@ module GL = {
   /* void cullFace(GLenum mode); */
   external cullFace: glT => int => unit = "cullFace" [@@bs.send];
 
-  type webGLBuffer;
-  /* WebGLBuffer gl.createBuffer(); */
-  external createBuffer: glT =>  unit => webGLBuffer = "createBuffer" [@@bs.send];
-
+  external createBuffer: glT => bufferT = "createBuffer" [@@bs.send];
+  external bindBuffer: glT => int => bufferT => unit = "bindBuffer" [@@bs.send];
+  external bufferData: glT => int => Uint32Array.t => int => unit = "bufferData" [@@bs.send];
 
   external createProgram: glT => programT = "createProgram" [@@bs.send];
   external linkProgram: glT => programT => unit = "linkProgram" [@@bs.send];
@@ -98,8 +123,8 @@ module GL = {
   external attachShader: glT => programT => shaderT => unit = "attachShader" [@@bs.send];
   external getShaderInfoLog: glT => shaderT => string = "getShaderInfoLog" [@@bs.send];
 
-
-
+  /* void drawElements(GLenum mode, GLsizei count, GLenum type, GLintptr offset); */
+  external drawElements: glT => int => int => int => int => unit = "drawElements" [@@bs.send];
 };
 
 module Document = {
