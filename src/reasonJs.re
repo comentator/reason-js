@@ -39,6 +39,16 @@ module GL = {
   let _STENCIL_BUFFER_BIT : int             = 0x00000400;
   let _COLOR_BUFFER_BIT : int               = 0x00004000;
 
+  /* BeginMode */
+  let _POINTS : int                         = 0x0000;
+  let _LINES : int                          = 0x0001;
+  let _LINE_LOOP : int                      = 0x0002;
+  let _LINE_STRIP : int                     = 0x0003;
+  let _TRIANGLES : int                      = 0x0004;
+  let _TRIANGLE_STRIP : int                 = 0x0005;
+  let _TRIANGLE_FAN : int                   = 0x0006;
+
+
   /* TEXTURE_2D */
   let _CULL_FACE : int                      = 0x0B44;
   let _BLEND : int                          = 0x0BE2;
@@ -113,6 +123,9 @@ module GL = {
   external attachShader: glT => programT => shaderT => unit = "attachShader" [@@bs.send];
   external getShaderInfoLog: glT => shaderT => string = "getShaderInfoLog" [@@bs.send];
 
+
+  /* void drawElements(GLenum mode, GLsizei count, GLenum type, GLintptr offset); */
+  external drawElements: glT => int => int => int => int => unit = "drawElements" [@@bs.send
 };
 
 module Document = {
