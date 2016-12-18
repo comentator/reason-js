@@ -9,7 +9,7 @@ type float32Array = array float;
 module VertexBuffer = {
 
   type vertexBuffer = {
-    buffer: GL.webGLBuffer,
+    buffer: GL.bufferT,
     data: float32Array,
     mutable mySize: int,
     mutable myStride: int,

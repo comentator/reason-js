@@ -27,6 +27,7 @@ module GL = {
   type glT;
   type programT;
   type shaderT;
+  type bufferT;
 
   /* ClearBufferMask */
   let _DEPTH_BUFFER_BIT : int               = 0x00000100;
@@ -81,10 +82,7 @@ module GL = {
   /* void cullFace(GLenum mode); */
   external cullFace: glT => int => unit = "cullFace" [@@bs.send];
 
-  type webGLBuffer;
-  /* WebGLBuffer gl.createBuffer(); */
-  external createBuffer: glT =>  unit => webGLBuffer = "createBuffer" [@@bs.send];
-
+  external createBuffer: glT => bufferT = "createBuffer" [@@bs.send];
 
   external createProgram: glT => programT = "createProgram" [@@bs.send];
   external linkProgram: glT => programT => unit = "linkProgram" [@@bs.send];
