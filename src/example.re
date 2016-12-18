@@ -7,7 +7,6 @@ open PipeLine;
 let canvas = Document.(getElementById "my-canvas");
 let gl = Document.(getContext canvas "webgl");
 
-
 let vertexStructure = VertexStructure.makeOne("pos", Float3);
 
 let vertexShader = "attribute vec3 pos;" ^
