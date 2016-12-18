@@ -1,9 +1,9 @@
 FLG -ppx /Users/chenglou/Desktop/okok/node_modules/bs-platform/bin/bsppx.exe
 
 ####{BSB GENERATED: NO EDIT
-S /Users/chenglou/Github/reason-js/node_modules/bs-platform/bin/../lib/ocaml
-B /Users/chenglou/Github/reason-js/node_modules/bs-platform/bin/../lib/ocaml
-PPX /Users/chenglou/Github/reason-js/node_modules/bs-platform/bin/bsppx.exe
+S /home/tom/projects/reason-js/node_modules/bs-platform/bin/../lib/ocaml
+B /home/tom/projects/reason-js/node_modules/bs-platform/bin/../lib/ocaml
+PPX /home/tom/projects/reason-js/node_modules/bs-platform/bin/bsppx.exe
 
                        
 S tests
