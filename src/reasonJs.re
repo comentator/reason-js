@@ -74,6 +74,9 @@ module GL = {
 
   /* void cullFace(GLenum mode); */
   external cullFace: glT => int => unit = "cullFace" [@@bs.send];
+  type webGLBuffer;
+  /* WebGLBuffer gl.createBuffer(); */
+  external createBuffer: glT =>  unit => webGLBuffer = "createBuffer" [@@bs.send]
 };
 
 module Document = {
@@ -138,4 +141,3 @@ module Response = {
 };
 
 external fetch : string => Promise.promiseT Response.responseT = "fetch" [@@bs.val];
-
