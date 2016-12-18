@@ -81,6 +81,7 @@ module GL = {
   /* void cullFace(GLenum mode); */
   external cullFace: glT => int => unit = "cullFace" [@@bs.send];
 
+
   external createProgram: glT => programT = "createProgram" [@@bs.send];
   external linkProgram: glT => programT => unit = "linkProgram" [@@bs.send];
   external useProgram: glT => programT => unit = "useProgram" [@@bs.send];
@@ -93,6 +94,10 @@ module GL = {
   external attachShader: glT => programT => shaderT => unit = "attachShader" [@@bs.send];
   external getShaderInfoLog: glT => shaderT => string = "getShaderInfoLog" [@@bs.send];
 
+
+  type webGLBuffer;
+  /* WebGLBuffer gl.createBuffer(); */
+  external createBuffer: glT =>  unit => webGLBuffer = "createBuffer" [@@bs.send]
 
 };
 
@@ -160,4 +165,3 @@ module Response = {
 };
 
 external fetch : string => Promise.promiseT Response.responseT = "fetch" [@@bs.val];
-
