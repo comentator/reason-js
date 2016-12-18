@@ -4,7 +4,7 @@ module VertexElement = {
 
   type vertexElement = {
     name: string,
-    vertexData: VertexData.vertexdata
+    vertexData: VertexData.vertexData
   };
 
 };
