@@ -23,6 +23,11 @@ module Math = {
   external random : unit => float = "Math.random" [@@bs.val];
 };
 
+module Uint32Array = {
+  type t;
+  external make : array int => t = "Uint32Array" [@@bs.new];
+};
+
 module GL = {
   type glT;
   type programT;
@@ -70,6 +75,10 @@ module GL = {
   let _ARRAY_BUFFER_BINDING : int           = 0x8894;
   let _ELEMENT_ARRAY_BUFFER_BINDING : int   = 0x8895;
 
+  let _STREAM_DRAW : int                    = 0x88E0;
+  let _STATIC_DRAW : int                    = 0x88E4;
+  let _DYNAMIC_DRAW : int                   = 0x88E8;
+
   /* void clear(GLbitfield mask); */
   external clear : glT => int => unit = "clear" [@@bs.send];
 
@@ -90,6 +99,7 @@ module GL = {
 
   external createBuffer: glT => bufferT = "createBuffer" [@@bs.send];
   external bindBuffer: glT => int => bufferT => unit = "bindBuffer" [@@bs.send];
+  external bufferData: glT => int => Uint32Array.t => int => unit = "bufferData" [@@bs.send];
 
   external createProgram: glT => programT = "createProgram" [@@bs.send];
   external linkProgram: glT => programT => unit = "linkProgram" [@@bs.send];

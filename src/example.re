@@ -4,6 +4,7 @@ open VertexStructure;
 open VertexData;
 open PipeLine;
 open IndexBuffer;
+open Array;
 
 let canvas = Document.(getElementById "my-canvas");
 let gl = Document.(getContext canvas "webgl");
@@ -23,11 +24,11 @@ let pipe = PipeLine.make(gl, vertexStructure, vertexShader, fragmentShader);
 PipeLine.compile(gl, pipe);
 
 let indices = IndexBuffer.make(gl, 3, Usage.StaticUsage);
-/*
-var i = indices.lock();
-i[0] = 0; i[1] = 1; i[2] = 2;
-indices.unlock();
-*/
+let i = IndexBuffer.lock indices;
+Array.set i 0 0;
+Array.set i 1 1;
+Array.set i 2 2;
+IndexBuffer.unlock(gl, indices);
 
 let rec render = fun () => {
     Window.(requestAnimationFrame window render);
