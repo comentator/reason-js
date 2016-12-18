@@ -1,13 +1,14 @@
 open Graphics;
 open ReasonJs;
 open VertexStructure;
+open VertexData;
 open PipeLine;
 
 let canvas = Document.(getElementById "my-canvas");
 let gl = Document.(getContext canvas "webgl");
 
 
-let vertexStructure = VertexStructure.makeOne("pos", VertexStructure.Float3);
+let vertexStructure = VertexStructure.makeOne("pos", Float3);
 
 let vertexShader = "attribute vec3 pos;" ^
 "void main() { " ^

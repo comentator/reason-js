@@ -9,7 +9,7 @@ type float32Array = array float;
 module VertexBuffer = {
 
   type vertexBuffer = {
-    buffer:GL.webGLBuffer,
+    buffer: GL.webGLBuffer,
     data: float32Array,
     mutable mySize: int,
     mutable myStride: int,
@@ -29,6 +29,7 @@ module VertexBuffer = {
     vbuffer.mySize = vertexCount;
     vbuffer.myStride = 0;
 
+    /*
     Array.iter(fun el => {
       let size = switch (VertexElement.vertexElement.vertexData el) {
       | VertexData.Float1 => 4*1
@@ -36,6 +37,7 @@ module VertexBuffer = {
       | VertexData.Float3 => 4*3;
       };
     } structure.elements);
+    */
   }
 
 };
