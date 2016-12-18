@@ -23,9 +23,9 @@ module Math = {
   external random : unit => float = "Math.random" [@@bs.val];
 };
 
-module Uint32Array = {
+module Uint16Array = {
   type t;
-  external make : array int => t = "Uint32Array" [@@bs.new];
+  external make : array int => t = "Uint16Array" [@@bs.new];
 };
 
 module GL = {
@@ -70,6 +70,15 @@ module GL = {
   let _DST_ALPHA : int                      = 0x0304;
   let _ONE_MINUS_DST_ALPHA : int            = 0x0305;
 
+  /* DataType */
+  let _BYTE : int                           = 0x1400;
+  let _UNSIGNED_BYTE : int                  = 0x1401;
+  let _SHORT : int                          = 0x1402;
+  let _UNSIGNED_SHORT : int                 = 0x1403;
+  let _INT : int                            = 0x1404;
+  let _UNSIGNED_INT : int                   = 0x1405;
+  let _FLOAT : int                          = 0x1406;
+
   /* CullFaceMode */
   let _FRONT : int                          = 0x0404;
   let _BACK : int                           = 0x0405;
@@ -109,7 +118,7 @@ module GL = {
 
   external createBuffer: glT => bufferT = "createBuffer" [@@bs.send];
   external bindBuffer: glT => int => bufferT => unit = "bindBuffer" [@@bs.send];
-  external bufferData: glT => int => Uint32Array.t => int => unit = "bufferData" [@@bs.send];
+  external bufferData: glT => int => Uint16Array.t => int => unit = "bufferData" [@@bs.send];
 
   external createProgram: glT => programT = "createProgram" [@@bs.send];
   external linkProgram: glT => programT => unit = "linkProgram" [@@bs.send];
