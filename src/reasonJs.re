@@ -64,6 +64,12 @@ module GL = {
   let _FRAGMENT_SHADER : int                  = 0x8B30;
   let _VERTEX_SHADER : int                    = 0x8B31;
 
+  /* Buffer Objects */
+  let _ARRAY_BUFFER : int                   = 0x8892;
+  let _ELEMENT_ARRAY_BUFFER : int           = 0x8893;
+  let _ARRAY_BUFFER_BINDING : int           = 0x8894;
+  let _ELEMENT_ARRAY_BUFFER_BINDING : int   = 0x8895;
+
   /* void clear(GLbitfield mask); */
   external clear : glT => int => unit = "clear" [@@bs.send];
 
@@ -83,6 +89,7 @@ module GL = {
   external cullFace: glT => int => unit = "cullFace" [@@bs.send];
 
   external createBuffer: glT => bufferT = "createBuffer" [@@bs.send];
+  external bindBuffer: glT => int => bufferT => unit = "bindBuffer" [@@bs.send];
 
   external createProgram: glT => programT = "createProgram" [@@bs.send];
   external linkProgram: glT => programT => unit = "linkProgram" [@@bs.send];

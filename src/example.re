@@ -3,6 +3,7 @@ open ReasonJs;
 open VertexStructure;
 open VertexData;
 open PipeLine;
+open IndexBuffer;
 
 let canvas = Document.(getElementById "my-canvas");
 let gl = Document.(getContext canvas "webgl");
@@ -21,6 +22,13 @@ let fragmentShader = "void main() {" ^
 let pipe = PipeLine.make(gl, vertexStructure, vertexShader, fragmentShader);
 PipeLine.compile(gl, pipe);
 
+let indices = IndexBuffer.make(gl, 3, Usage.StaticUsage);
+/*
+var i = indices.lock();
+i[0] = 0; i[1] = 1; i[2] = 2;
+indices.unlock();
+*/
+
 let rec render = fun () => {
     Window.(requestAnimationFrame window render);
 
@@ -28,6 +36,7 @@ let rec render = fun () => {
     let c : Graphics.color = {r: 0.5, g: 0.3, b: 1.0, a: 1.0};
     Graphics.clear(gl, c);
     Graphics.setPipeline(gl, pipe);
+    Graphics.setIndexBuffer(gl, indices);
 };
 
 Window.(requestAnimationFrame window render);
