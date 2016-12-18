@@ -11,34 +11,47 @@ module VertexBuffer = {
   type vertexBuffer = {
     buffer: GL.webGLBuffer,
     data: float32Array,
-    mutable mySize: int,
-    mutable myStride: int,
+    mySize: int,
+    myStride: int,
     sizes: array int,
     offsets: array int,
-    mutable usage: usage,
-    mutable instanceDataStepRate: int
+    usage: usage,
+    instanceDataStepRate: int
   };
 
   /* canRead standardmaessig true
     instanceDataStepRate = 0
   */
+  /* new()*/
+  let make = fun(gl: GL.glT,vertexCount: int, structure: VertexStructure.vertexStructure, newUsage: usage, instanceDataStepRate: int , canRead: bool) => {
+    let stride = 0;
+    let stride =List.fold_left (fun(x) => {
+              fun (y) => {
+                x
+              }});
 
-  let news = fun(vbuffer: vertexBuffer, vertexCount: int, structure: VertexStructure.vertexStructure, newUsage: usage, instanceDataStepRate: int , canRead: bool) => {
-    vbuffer.usage = newUsage;
-    vbuffer.instanceDataStepRate = instanceDataStepRate;
-    vbuffer.mySize = vertexCount;
-    vbuffer.myStride = 0;
 
-    /*
-    Array.iter(fun el => {
-      let size = switch (VertexElement.vertexElement.vertexData el) {
-      | VertexData.Float1 => 4*1
-      | VertexData.Float2 => 4*2
-      | VertexData.Float3 => 4*3;
-      };
-    } structure.elements);
-    */
+    let vbuffer:vertexBuffer = {
+      buffer:GL.(createBuffer gl)(),
+      usage:newUsage,
+      instanceDataStepRate:instanceDataStepRate,
+      mySize:vertexCount,
+      myStride:stride,
+      sizes:Array.make vertexCount 0,
+      offsets: Array.make vertexCount 0,
+      data:Array.make (vertexCount*stride)/4 0.0
+    };
+    vbuffer;
   }
+
+  let lock = fun(vbuffer:vertexBuffer)=>{
+    vbuffer.data;
+  };
+
+  let unlock = fun(vbuffer:vertexBuffer) => {
+    
+  }
+
 
 };
 
