@@ -81,3 +81,46 @@ module Response = {
 };
 
 external fetch : string => Promise.promiseT Response.responseT = "fetch" [@@bs.val];
+
+
+module GL = {
+  type glT;
+
+  /* ClearBufferMask */
+  let _DEPTH_BUFFER_BIT : int               = 0x00000100;
+  let _STENCIL_BUFFER_BIT : int             = 0x00000400;
+  let _COLOR_BUFFER_BIT : int               = 0x00004000;
+
+  /* TEXTURE_2D */
+  let _CULL_FACE : int                      = 0x0B44;
+  let _BLEND : int                          = 0x0BE2;
+  let _DITHER : int                         = 0x0BD0;
+  let _STENCIL_TEST : int                   = 0x0B90;
+  let _DEPTH_TEST : int                     = 0x0B71;
+  let _SCISSOR_TEST : int                   = 0x0C11;
+  let _POLYGON_OFFSET_FILL : int            = 0x8037;
+  let _SAMPLE_ALPHA_TO_COVERAGE : int       = 0x809E;
+  let _SAMPLE_COVERAGE : int                = 0x80A0;
+
+  /* BlendingFactorDest */
+  let _ZERO : int                           = 0;
+  let _ONE : int                            = 1;
+  let _SRC_COLOR : int                      = 0x0300;
+  let _ONE_MINUS_SRC_COLOR : int            = 0x0301;
+  let _SRC_ALPHA : int                      = 0x0302;
+  let _ONE_MINUS_SRC_ALPHA : int            = 0x0303;
+  let _DST_ALPHA : int                      = 0x0304;
+  let _ONE_MINUS_DST_ALPHA : int            = 0x0305;
+
+  /* void clear(GLbitfield mask); */
+  external clear : glT => int => unit = "clear" [@@bs.send];
+
+  /* void clearColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha); */
+  external clearColor : glT => float => float => float => float => unit = "clearColor" [@@bs.send];
+
+  /* void enable(GLenum cap); */
+  external enable : glT => int => unit = "enable" [@@bs.send];
+
+  /* void blendFunc(GLenum sfactor, GLenum dfactor); */
+  external blendFunc: glT => int => int => unit = "blendFunc" [@@bs.send];
+}
