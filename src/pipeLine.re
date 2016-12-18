@@ -8,7 +8,7 @@ module PipeLine = {
         /* ToDo: more here */
 
         program: GL.programT,
-        vertexStructure: VertexStructure.structure, /* ToDo: This is actually an array of structures */
+        vertexStructure: VertexStructure.vertexStructure, /* ToDo: This is actually an array of structures */
         vertexShader: string,
         fragmentShader: string,
     };
