@@ -1,5 +1,7 @@
 open Graphics;
 open ReasonJs;
+open VertexStructure;
+open PipeLine;
 
 let canvas = Document.(getElementById "my-canvas");
 let gl = Document.(getContext canvas "webgl");
