@@ -19,5 +19,10 @@ module IndexBuffer = {
     };
 
     x
-  }
+  };
+
+  let set = fun (gl: GL.glT, indexBuffer: indexBuffer) => {
+    GL.(bindBuffer gl GL._ELEMENT_ARRAY_BUFFER indexBuffer.buffer);
+  };
+
 };
