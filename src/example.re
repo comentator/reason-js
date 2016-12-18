@@ -5,6 +5,8 @@ let canvas = Document.(getElementById "my-canvas");
 let gl = Document.(getContext canvas "webgl");
 
 
+let vertexStructure = VertexStructure.makeOne("pos", VertexStructure.Float3);
+
 let vertexShader = "attribute vec3 pos;" ^
 "void main() { " ^
 "    gl_Position = vec4(pos.x, pos.y, 0.5, 1.0); " ^
@@ -14,7 +16,7 @@ let fragmentShader = "void main() {" ^
 "    gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);" ^
 "}";
 
-let pipe = PipeLine.make(gl, vertexShader, fragmentShader);
+let pipe = PipeLine.make(gl, vertexStructure, vertexShader, fragmentShader);
 PipeLine.compile(gl, pipe);
 
 let rec render = fun () => {
