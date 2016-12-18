@@ -5,20 +5,47 @@ type cullmode =
     | CounterClockwise
     | None;
 
+module VertexStructure = {
+    type vertexdata =
+        | Float1
+        | Float2
+        | Float3
+        | Float4;
+        /* ToDo: | Float4x4; */
+
+    type element = {
+        name: string,
+        vertexData: vertexdata
+    };
+
+    let makeOne = fun (name, vertexData) => {
+        let x : element = {
+            name,
+            vertexData
+        };
+
+        [x]
+    };
+
+    type structure = list element;
+};
+
 module PipeLine = {
     type pipe = {
         cullMode: cullmode,
         /* ToDo: more here */
 
         program: GL.programT,
+        vertexStructure: VertexStructure.structure, /* ToDo: This is actually an array of structures */
         vertexShader: string,
         fragmentShader: string,
     };
 
-    let make = fun (gl, vertexShader, fragmentShader) => {
+    let make = fun (gl, vertexStructure, vertexShader, fragmentShader) => {
         let x : pipe = {
             cullMode: None,
             program: GL.(createProgram gl),
+            vertexStructure,
             vertexShader,
             fragmentShader
         };
