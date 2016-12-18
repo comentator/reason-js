@@ -29,7 +29,7 @@ module IndexBuffer = {
   let unlock = fun (gl: GL.glT, indexBuffer: indexBuffer) => {
     GL.(bindBuffer gl GL._ELEMENT_ARRAY_BUFFER indexBuffer.buffer);
     /* ToDo: var glData: Dynamic = SystemImpl.elementIndexUint == null ? new Uint16Array(data) : new js.html.Uint32Array(data); */
-    let glData = Uint32Array.(make indexBuffer.data);
+    let glData = Uint16Array.(make indexBuffer.data);
     let u = switch indexBuffer.usage {
         | StaticUsage => GL._STATIC_DRAW
         | DynamicUsage => GL._DYNAMIC_DRAW
