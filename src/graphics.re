@@ -7,15 +7,77 @@ type cullmode =
 
 module PipeLine = {
     type pipe = {
-        mutable cullMode: cullmode,
+        cullMode: cullmode,
+        /* ToDo: more here */
+
+        program: GL.programT,
+        vertexShader: string,
+        fragmentShader: string,
     };
+
+    let make = fun (gl, vertexShader, fragmentShader) => {
+        let x : pipe = {
+            cullMode: None,
+            program: GL.(createProgram gl),
+            vertexShader,
+            fragmentShader
+        };
+
+        x
+    };
+
+
+    let compileShader = fun (gl, shaderType, source) => {
+        let s = GL.(createShader gl shaderType);
+        GL.(shaderSource gl s source);
+        GL.(compileShader gl s);
+
+        log(GL.(getShaderInfoLog gl s));
+
+        /*
+        if (!SystemImpl.gl.getShaderParameter(s, GL.COMPILE_STATUS)) {
+            throw "Could not compile shader:\n" + SystemImpl.gl.getShaderInfoLog(s);
+        }
+        */
+
+        s
+    };
+
+    let compile = fun (gl: GL.glT, p: pipe) => {
+        let vertexShader = compileShader(gl, GL._VERTEX_SHADER, p.vertexShader);
+        let fragmentShader = compileShader(gl, GL._FRAGMENT_SHADER, p.fragmentShader);
+        let program = p.program;
+        GL.(attachShader gl program vertexShader);
+        GL.(attachShader gl program fragmentShader);
+
+        /* XXX structure */
+
+        GL.(linkProgram gl program);
+
+
+        log(GL.(getProgramInfoLog gl program));
+
+        /*
+        if (!SystemImpl.gl.getProgramParameter(program, GL.LINK_STATUS)) {
+            throw "Could not link the shader program:\n" + SystemImpl.gl.getProgramInfoLog(program);
+        }
+        */
+    };
+
+    let set = fun (gl, p) => {
+        GL.(useProgram gl p.program);
+/*
+        for (index in 0...textureValues.length) SystemImpl.gl.uniform1i(textureValues[index], index);
+        SystemImpl.gl.colorMask(colorWriteMaskRed, colorWriteMaskGreen, colorWriteMaskBlue, colorWriteMaskAlpha);
+*/
+    }
 };
 
 module Graphics = {
     type color = {r: float, g: float, b: float, a: float};
 
     /* Begin is overloaded */
-    let begin_ = fun gl => {
+    let begin_ = fun (gl) => {
 
         GL.(enable gl GL._BLEND);
         GL.(blendFunc gl GL._SRC_ALPHA GL._ONE_MINUS_SRC_ALPHA);
@@ -51,6 +113,7 @@ module Graphics = {
         }
     };
 
+
     let setPipeline = fun (gl, pipe : PipeLine.pipe) => {
         setCullMode(gl, pipe.cullMode);
         /*
@@ -59,6 +122,7 @@ module Graphics = {
         setBlendingMode(pipe.blendSource, pipe.blendDestination, pipe.blendOperation, pipe.alphaBlendSource, pipe.alphaBlendDestination, pipe.alphaBlendOperation);
         pipe.set();
         */
+        PipeLine.set(gl, pipe);
     };
 
 };
