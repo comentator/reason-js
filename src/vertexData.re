@@ -1,5 +1,5 @@
 module VertexData = {
-  type vertexdata =
+  type vertexData =
         | Float1
         | Float2
         | Float3

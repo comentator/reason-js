@@ -1,25 +1,17 @@
-open Array;
 open VertexElement;
+open VertexData;
+
 module VertexStructure = {
-  type vertexdata =
-      | Float1
-      | Float2
-      | Float3
-      | Float4;
-      /* ToDo: | Float4x4; */
-  type vertexStructure = {
-    elements:array VertexElement.vertexElement
-  };
-  type element = {
-      name: string,
-      vertexData: vertexdata
-  };
+
+  type vertexStructure = list VertexElement.vertexElement;
+
   let makeOne = fun (name, vertexData) => {
-      let x : element = {
+      let x : VertexElement.vertexElement = {
           name,
           vertexData
       };
 
       [x]
   };
+
 }
