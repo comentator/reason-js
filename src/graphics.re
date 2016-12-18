@@ -1,21 +1,13 @@
 open ReasonJs;
-
-type cullmode =
-    | Clockwise
-    | CounterClockwise
-    | None;
-
-module PipeLine = {
-    type pipe = {
-        mutable cullMode: cullmode,
-    };
-};
+open VertexStructure;
+open PipeLine;
+open Types;
 
 module Graphics = {
     type color = {r: float, g: float, b: float, a: float};
 
     /* Begin is overloaded */
-    let begin_ = fun gl => {
+    let begin_ = fun (gl) => {
 
         GL.(enable gl GL._BLEND);
         GL.(blendFunc gl GL._SRC_ALPHA GL._ONE_MINUS_SRC_ALPHA);
@@ -37,7 +29,7 @@ module Graphics = {
         GL.(clear gl GL._COLOR_BUFFER_BIT);
     };
 
-    let setCullMode = fun (gl, cullMode : cullmode) => {
+    let setCullMode = fun (gl, cullMode : Types.cullmode) => {
         switch cullMode {
             | None => GL.(disable gl GL._CULL_FACE);
             | Clockwise => {
@@ -51,6 +43,7 @@ module Graphics = {
         }
     };
 
+
     let setPipeline = fun (gl, pipe : PipeLine.pipe) => {
         setCullMode(gl, pipe.cullMode);
         /*
@@ -59,6 +52,7 @@ module Graphics = {
         setBlendingMode(pipe.blendSource, pipe.blendDestination, pipe.blendOperation, pipe.alphaBlendSource, pipe.alphaBlendDestination, pipe.alphaBlendOperation);
         pipe.set();
         */
+        PipeLine.set(gl, pipe);
     };
 
 };

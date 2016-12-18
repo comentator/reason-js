@@ -25,6 +25,8 @@ module Math = {
 
 module GL = {
   type glT;
+  type programT;
+  type shaderT;
 
   /* ClearBufferMask */
   let _DEPTH_BUFFER_BIT : int               = 0x00000100;
@@ -57,6 +59,10 @@ module GL = {
   let _BACK : int                           = 0x0405;
   let _FRONT_AND_BACK : int                 = 0x0408;
 
+  /* Shaders */
+  let _FRAGMENT_SHADER : int                  = 0x8B30;
+  let _VERTEX_SHADER : int                    = 0x8B31;
+
   /* void clear(GLbitfield mask); */
   external clear : glT => int => unit = "clear" [@@bs.send];
 
@@ -74,9 +80,26 @@ module GL = {
 
   /* void cullFace(GLenum mode); */
   external cullFace: glT => int => unit = "cullFace" [@@bs.send];
+
   type webGLBuffer;
   /* WebGLBuffer gl.createBuffer(); */
-  external createBuffer: glT =>  unit => webGLBuffer = "createBuffer" [@@bs.send]
+  external createBuffer: glT =>  unit => webGLBuffer = "createBuffer" [@@bs.send];
+
+
+  external createProgram: glT => programT = "createProgram" [@@bs.send];
+  external linkProgram: glT => programT => unit = "linkProgram" [@@bs.send];
+  external useProgram: glT => programT => unit = "useProgram" [@@bs.send];
+  external getProgramInfoLog: glT => programT => string = "getProgramInfoLog" [@@bs.send];
+  external bindAttribLocation: glT => programT => int => string => unit = "bindAttribLocation" [@@bs.send];
+
+  external createShader: glT => int => shaderT = "createShader" [@@bs.send];
+  external shaderSource: glT => shaderT => string => unit = "shaderSource" [@@bs.send];
+  external compileShader: glT => shaderT => unit = "compileShader" [@@bs.send];
+  external attachShader: glT => programT => shaderT => unit = "attachShader" [@@bs.send];
+  external getShaderInfoLog: glT => shaderT => string = "getShaderInfoLog" [@@bs.send];
+
+
+
 };
 
 module Document = {
@@ -87,6 +110,8 @@ module Document = {
   /* Should be on CanvasElement */
   external getContext : element => string => GL.glT = "getContext" [@@bs.send];
 };
+
+external log: string => unit = "console.log" [@@bs.val];
 
 type intervalId;
 
