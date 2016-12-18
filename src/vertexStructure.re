@@ -1,20 +1,12 @@
-open Array;
 open VertexElement;
 open VertexData;
 
 module VertexStructure = {
 
-  type vertexStructure = {
-    elements: array VertexElement.vertexElement
-  };
-
-  type element = {
-      name: string,
-      vertexData: VertexData.vertexdata
-  };
+  type vertexStructure = list VertexElement.vertexElement;
 
   let makeOne = fun (name, vertexData) => {
-      let x : element = {
+      let x : VertexElement.vertexElement = {
           name,
           vertexData
       };
