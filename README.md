@@ -16,3 +16,16 @@ npm install reason-js
 /* Looks almost identical to JavaScript, but fully typed! */
 let myInterval = ReasonJs.setInterval (fun () => Js.log "hello!") 1000;
 ```
+
+
+## XXXX How to build this for our project
+
+```
+git clone this-repo
+cd this-repo
+npm install
+npm start
+CTRL + C
+browserify lib/js/src/example.js > test.js
+open test.html
+```
