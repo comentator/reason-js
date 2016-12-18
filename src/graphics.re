@@ -77,7 +77,23 @@ module PipeLine = {
         GL.(attachShader gl program vertexShader);
         GL.(attachShader gl program fragmentShader);
 
-        /* XXX structure */
+/*
+        for (structure in inputLayout) {
+            for (element in structure.elements) {
+                SystemImpl.gl.bindAttribLocation(program, index, element.name);
+                if (element.data == VertexData.Float4x4) {
+                    index += 4;
+                }
+                else {
+                    ++index;
+                }
+            }
+        }
+*/
+        /* this doesn't work with Float4x4 */
+        /* ToDo I can't get this compiling: !!! List.mapi (fun (i : int, e : VertexStructure.element) => { GL.(bindAttribLocation gl program i e.name) }) p.vertexStructure; */
+        GL.(bindAttribLocation gl program 0 "pos");
+
 
         GL.(linkProgram gl program);
 

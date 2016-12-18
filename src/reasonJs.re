@@ -85,12 +85,14 @@ module GL = {
   external linkProgram: glT => programT => unit = "linkProgram" [@@bs.send];
   external useProgram: glT => programT => unit = "useProgram" [@@bs.send];
   external getProgramInfoLog: glT => programT => string = "getProgramInfoLog" [@@bs.send];
+  external bindAttribLocation: glT => programT => int => string => unit = "bindAttribLocation" [@@bs.send];
 
   external createShader: glT => int => shaderT = "createShader" [@@bs.send];
   external shaderSource: glT => shaderT => string => unit = "shaderSource" [@@bs.send];
   external compileShader: glT => shaderT => unit = "compileShader" [@@bs.send];
   external attachShader: glT => programT => shaderT => unit = "attachShader" [@@bs.send];
   external getShaderInfoLog: glT => shaderT => string = "getShaderInfoLog" [@@bs.send];
+
 
 };
 
