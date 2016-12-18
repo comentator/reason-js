@@ -4,10 +4,16 @@ open ReasonJs;
 let canvas = Document.(getElementById "my-canvas");
 let gl = Document.(getContext canvas "webgl");
 
-Graphics.begin_ gl;
+let rec render = fun () => {
+    Window.(requestAnimationFrame window render);
 
-let c : Graphics.color = {r: 0.5, g: 0.3, b: 1.0, a: 1.0};
-Graphics.clear(gl, c);
+    Graphics.begin_(gl);
+    let c : Graphics.color = {r: 0.5, g: 0.3, b: 1.0, a: 1.0};
+    Graphics.clear(gl, c);
+};
+
+Window.(requestAnimationFrame window render);
+
 
 /*
 package;

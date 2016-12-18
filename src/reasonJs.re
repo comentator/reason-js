@@ -4,6 +4,7 @@ module Window = {
   external innerWidth : t => int = "innerWidth" [@@bs.get];
   external innerHeight : t => int = "innerHeight" [@@bs.get];
   external addEventListener : t => string => (unit => unit) => unit = "addEventListener" [@@bs.send];
+  external requestAnimationFrame : t => (unit => unit) => unit = "requestAnimationFrame" [@@bs.send];
   external onLoad : t => (unit => unit) => unit = "onload" [@@bs.set];
 };
 
