@@ -32,7 +32,7 @@ module VertexBuffer = {
 
 
     let vbuffer:vertexBuffer = {
-      buffer:GL.(createBuffer gl)(),
+      buffer:GL.(createBuffer gl),
       usage:newUsage,
       instanceDataStepRate:instanceDataStepRate,
       mySize:vertexCount,
@@ -42,22 +42,24 @@ module VertexBuffer = {
       data:Array.make (vertexCount*stride)/4 0.0
     };
     vbuffer;
-  }
+  };
 
   let lock = fun(vbuffer:vertexBuffer)=>{
     vbuffer.data;
   };
 
   let unlock = fun(vbuffer:vertexBuffer) => {
-    
+    GL.(bindBuffer gl GL._ELEMENT_ARRAY_BUFFER vbuffer.buffer);
+    let glData = Uint32Array.(make vbuffer.data);
+    let u = switch vbuffer.usage {
+        | StaticUsage => GL._STATIC_DRAW
+        | DynamicUsage => GL._DYNAMIC_DRAW
+        | ReadableUsage => GL._STATIC_DRAW
+    };
+    GL.(bufferData gl GL._ELEMENT_ARRAY_BUFFER glData u);
+  }
+  let delete = fun(vbuffer:vertexBuffer)=>{
+    GL.(deleteBuffer gl vbuffer);
   }
 
-
 };
-
-/* public function new(vertexCount: Int, structure: VertexStructure, usage: Usage, instanceDataStepRate: Int = 0, canRead: Bool = false);
-public function delete(): Void;
-public function lock(?start: Int, ?count: Int): Float32Array;
-public function unlock(): Void;
-public function count(): Int;
-public function stride(): Int; */
