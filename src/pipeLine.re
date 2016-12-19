@@ -15,18 +15,13 @@ module PipeLine = {
         inputLayout:array VertexStructure.vertexStructure
     };
 
-    let make = fun (gl, vertexStructure, vertexShader, fragmentShader) => {
-        let x : pipe = {
-            cullMode: None,
-            program: GL.(createProgram gl),
-            inputLayout: vertexStructure,
-            vertexShader,
-            fragmentShader
-        };
-
-        x
+    let make = fun (gl, vertexStructure, vertexShader, fragmentShader) : pipe => {
+        cullMode: None,
+        program: GL.(createProgram gl),
+        inputLayout: vertexStructure,
+        vertexShader,
+        fragmentShader
     };
-
 
     let compileShader = fun (gl, shaderType, source) => {
         let s = GL.(createShader gl shaderType);
