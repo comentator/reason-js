@@ -25,7 +25,8 @@ module VertexBuffer = {
   /* new()*/
   let make = fun(gl: GL.glT, vertexCount: int, structure: VertexStructure.vertexStructure, newUsage: usage, instanceDataStepRate: int , canRead: bool) => {
     let stride = 0;
-
+    let sizes = Array.make vertexCount 0;
+    let offsets = Array.make vertexCount 0;
     let stride = List.fold_left (
       fun acc x => {
         switch x.vertexData {
@@ -35,8 +36,28 @@ module VertexBuffer = {
           | Float4 => acc + 4*4
         };
       }) 0 structure;
-
-
+      let vars = {
+        offset:0,
+        index:0
+      }
+    List.iter(
+      fun el => {
+        let size = switch el.vertexData {
+          | Float1 => 1
+          | Float2 => 2
+          | Float3 => 3
+          | Float4 => 4
+        };
+        Array.set sizes vars.index size;
+        Array.set offsets vars.index offset;
+        var.offset = switch el.vertexData {
+          | Float1 => 1
+          | Float2 => 2
+          | Float3 => 3
+          | Float4 => 4
+        };
+      } structure
+    );
     let foo = ((vertexCount * stride) / 4);
     let data = Array.make foo 0.0;
 
@@ -46,8 +67,8 @@ module VertexBuffer = {
       instanceDataStepRate:instanceDataStepRate,
       mySize:vertexCount,
       myStride:stride,
-      sizes: Array.make vertexCount 0,
-      offsets: Array.make vertexCount 0,
+      sizes: sizes,
+      offsets: offsets,
       data:data
     };
     vbuffer;
