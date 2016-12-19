@@ -37,7 +37,13 @@ module VertexBuffer = {
           | Float4 => acc + 4*4
         };
       }) 0 structure;
-
+    let getCurrentOffset = fun(idx) => {
+      if(idx==0){
+        0;
+      }else{
+        Array.get offsets idx-1;
+      };
+    };
     List.iteri(
       fun index el => {
         let y : VertexElement.vertexElement = el;
@@ -47,16 +53,9 @@ module VertexBuffer = {
           | Float3 => 3
           | Float4 => 4
         };
-        let getCurrentOffset = fun(idx) => {
-          if(idx==0){
-            0;
-          }else{
-            Array.get offsets idx-1;
-          };
-        };
+        let currentOffset = getCurrentOffset(index);
         Array.set sizes index size;
-        Array.set offsets index getCurrentOffset(index);
-
+        Array.set offsets index currentOffset;
       }) structure;
     let foo = ((vertexCount * stride) / 4);
     let data = Array.make foo 0.0;
@@ -85,6 +84,7 @@ module VertexBuffer = {
         | DynamicUsage => GL._DYNAMIC_DRAW
         | ReadableUsage => GL._STATIC_DRAW
     };
+
     GL.(bufferData gl GL._ARRAY_BUFFER glData u);
   };
 
