@@ -22,7 +22,9 @@ module Date = {
 module Math = {
   external random : unit => float = "Math.random" [@@bs.val];
 };
-
+module Float32Array = {
+  type float32Array = array float;
+};
 module Uint16Array = {
   type t;
   external make : array int => t = "Uint16Array" [@@bs.new];
@@ -120,6 +122,8 @@ module GL = {
   external deleteBuffer: glT => bufferT => unit = "createBuffer" [@@bs.send];
   external bindBuffer: glT => int => bufferT => unit = "bindBuffer" [@@bs.send];
   external bufferData: glT => int => Uint16Array.t => int => unit = "bufferData" [@@bs.send];
+  external bufferFloatData: glT => int => Float32Array.float32Array => int => unit = "bufferData" [@@bs.send];
+
 
   external createProgram: glT => programT = "createProgram" [@@bs.send];
   external linkProgram: glT => programT => unit = "linkProgram" [@@bs.send];
