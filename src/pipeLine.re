@@ -9,16 +9,15 @@ module PipeLine = {
         /* ToDo: more here */
 
         program: GL.programT,
-        /* vertexStructure: VertexStructure.vertexStructure, /* ToDo: This is actually an array of structures */ */
         vertexShader: string,
         fragmentShader: string,
-        inputLayout:array VertexStructure.vertexStructure
+        inputLayout: array VertexStructure.vertexStructure
     };
 
-    let make = fun (gl, vertexStructure, vertexShader, fragmentShader) : pipe => {
+    let make = fun (gl, inputLayout, vertexShader, fragmentShader) : pipe => {
         cullMode: None,
         program: GL.(createProgram gl),
-        inputLayout: vertexStructure,
+        inputLayout,
         vertexShader,
         fragmentShader
     };
