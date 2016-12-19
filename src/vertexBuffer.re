@@ -29,7 +29,8 @@ module VertexBuffer = {
     let offsets = Array.make vertexCount 0;
     let stride = List.fold_left (
       fun acc x => {
-        switch x.vertexData {
+        let y : VertexElement.vertexElement = x;
+        switch y.vertexData {
           | Float1 => acc + 4*1
           | Float2 => acc + 4*2
           | Float3 => acc + 4*3
