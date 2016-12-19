@@ -71,7 +71,6 @@ module VertexBuffer = {
     };
   };
 
-
   let lock = fun (vbuffer: vertexBuffer) => {
     vbuffer.data;
   };
@@ -111,7 +110,6 @@ module VertexBuffer = {
     GL.(vertexAttribPointer gl (offset + attributesOffset) size GL._FLOAT false vbuffer.stride thisoffset);
 
     }) vbuffer.sizes;
-
  };
 
 };
