@@ -5,12 +5,12 @@ open VertexStructure;
 open VertexElement;
 open VertexData;
 
-type float32Array = array float;
+
 module VertexBuffer = {
 
   type vertexBuffer = {
     buffer: GL.bufferT,
-    mutable data: float32Array,
+    mutable data: Float32Array.float32Array,
     mySize: int,
     myStride: int,
     sizes: array int,
@@ -37,31 +37,27 @@ module VertexBuffer = {
           | Float4 => acc + 4*4
         };
       }) 0 structure;
-    /*
-    let vars = {
-        offset:0,
-        index:0
-    }
-    List.iter(
-      fun el => {
-        let size = switch el.vertexData {
-          | Float1 => 1
-          | Float2 => 2
-          | Float3 => 3
-          | Float4 => 4
-        };
-        Array.set sizes vars.index size;
-        Array.set offsets vars.index offset;
-        var.offset = switch el.vertexData {
-          | Float1 => 1
-          | Float2 => 2
-          | Float3 => 3
-          | Float4 => 4
-        };
-      } structure
-    );
-    */
 
+    List.iteri(
+      fun index el => {
+        let y : VertexElement.vertexElement = el;
+        let size = switch y.vertexData {
+          | Float1 => 1
+          | Float2 => 2
+          | Float3 => 3
+          | Float4 => 4
+        };
+        let getCurrentOffset = fun(idx) => {
+          if(idx==0){
+            0;
+          }else{
+            Array.get offsets idx-1;
+          };
+        };
+        Array.set sizes index size;
+        Array.set offsets index getCurrentOffset(index);
+
+      }) structure;
     let foo = ((vertexCount * stride) / 4);
     let data = Array.make foo 0.0;
 
@@ -84,7 +80,6 @@ module VertexBuffer = {
 
   let unlock = fun (gl: GL.glT, vbuffer:vertexBuffer) => {
     GL.(bindBuffer gl GL._ARRAY_BUFFER vbuffer.buffer);
-    let glData = Uint16Array.(make (Array.map int_of_float vbuffer.data));
     let u = switch vbuffer.usage {
         | StaticUsage => GL._STATIC_DRAW
         | DynamicUsage => GL._DYNAMIC_DRAW
@@ -93,7 +88,9 @@ module VertexBuffer = {
     GL.(bufferData gl GL._ARRAY_BUFFER glData u);
   };
 
-  let delete = fun (gl: GL.glT, vbuffer: vertexBuffer) => {
+
+
+  let delete = fun (gl: GL.glT,vbuffer: vertexBuffer) => {
     vbuffer.data = Array.make 0 0.0;
     GL.(deleteBuffer gl vbuffer.buffer);
   };
