@@ -117,6 +117,7 @@ module GL = {
   external cullFace: glT => int => unit = "cullFace" [@@bs.send];
 
   external createBuffer: glT => bufferT = "createBuffer" [@@bs.send];
+  external deleteBuffer: glT => bufferT => unit = "createBuffer" [@@bs.send];
   external bindBuffer: glT => int => bufferT => unit = "bindBuffer" [@@bs.send];
   external bufferData: glT => int => Uint16Array.t => int => unit = "bufferData" [@@bs.send];
 

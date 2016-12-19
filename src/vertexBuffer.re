@@ -10,7 +10,7 @@ module VertexBuffer = {
 
   type vertexBuffer = {
     buffer: GL.bufferT,
-    data: float32Array,
+    mutable data: float32Array,
     mySize: int,
     myStride: int,
     sizes: array int,
@@ -25,13 +25,16 @@ module VertexBuffer = {
   /* new()*/
   let make = fun(gl: GL.glT, vertexCount: int, structure: VertexStructure.vertexStructure, newUsage: usage, instanceDataStepRate: int , canRead: bool) => {
     let stride = 0;
-    /* let stride = List.fold_left (fun(x) => {
-              fun (y) => {
-                x 
-              }}) 0 sizes;
-    */
 
-    let stride = List.fold_left (fun acc x => { (acc +  4 * 3) /* todo not just Float3 */ }) 0 structure;
+    let stride = List.fold_left (
+      fun acc x => {
+        switch x.vertexData {
+          | Float1 => acc + 4*1
+          | Float2 => acc + 4*2
+          | Float3 => acc + 4*3
+          | Float4 => acc + 4*4
+        };
+      }) 0 structure;
 
 
     let foo = ((vertexCount * stride) / 4);
@@ -45,7 +48,7 @@ module VertexBuffer = {
       myStride:stride,
       sizes: Array.make vertexCount 0,
       offsets: Array.make vertexCount 0,
-      data
+      data:data
     };
     vbuffer;
   };
@@ -66,7 +69,10 @@ module VertexBuffer = {
   };
 
   let delete = fun (vbuffer: vertexBuffer) => {
+    vbuffer.data = Array.make 0 0.0;
     GL.(deleteBuffer gl vbuffer.buffer);
   }
+
+
 
 };
