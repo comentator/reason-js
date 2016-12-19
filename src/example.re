@@ -20,8 +20,8 @@ let vertexShader = "attribute vec3 pos;" ^
 let fragmentShader = "void main() {" ^
 "    gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);" ^
 "}";
-
-let pipe = PipeLine.make(gl, vertexStructure, vertexShader, fragmentShader);
+let inputLayout = Array.make 0 vertexStructure;
+let pipe = PipeLine.make(gl, inputLayout, vertexShader, fragmentShader);
 PipeLine.compile(gl, pipe);
 
 let vertices = VertexBuffer.make(gl, 3, vertexStructure, Usage.StaticUsage, 0, true);
