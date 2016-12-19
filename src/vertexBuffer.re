@@ -10,7 +10,7 @@ module VertexBuffer = {
 
   type vertexBuffer = {
     buffer: GL.bufferT,
-    mutable data: Float32Array.float32Array,
+    mutable data: array float,
     mySize: int,
     myStride: int,
     sizes: array int,
@@ -81,14 +81,14 @@ module VertexBuffer = {
 
   let unlock = fun (gl: GL.glT, vbuffer:vertexBuffer) => {
     GL.(bindBuffer gl GL._ARRAY_BUFFER vbuffer.buffer);
-    let glData = Uint16Array.(make (Array.map int_of_float vbuffer.data));
+    let glData = Float32Array.(make vbuffer.data);
     let u = switch vbuffer.usage {
         | StaticUsage => GL._STATIC_DRAW
         | DynamicUsage => GL._DYNAMIC_DRAW
         | ReadableUsage => GL._STATIC_DRAW
     };
 
-    GL.(bufferData gl GL._ARRAY_BUFFER glData u);
+    GL.(bufferFloatData gl GL._ARRAY_BUFFER glData u);
   };
 
   let delete = fun (gl: GL.glT,vbuffer: vertexBuffer) => {
