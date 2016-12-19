@@ -37,10 +37,11 @@ module VertexBuffer = {
           | Float4 => acc + 4*4
         };
       }) 0 structure;
-      let vars = {
+    /*
+    let vars = {
         offset:0,
         index:0
-      }
+    }
     List.iter(
       fun el => {
         let size = switch el.vertexData {
@@ -59,6 +60,8 @@ module VertexBuffer = {
         };
       } structure
     );
+    */
+
     let foo = ((vertexCount * stride) / 4);
     let data = Array.make foo 0.0;
 
@@ -75,26 +78,39 @@ module VertexBuffer = {
     vbuffer;
   };
 
-  let lock = fun(vbuffer:vertexBuffer)=>{
+  let lock = fun (vbuffer:vertexBuffer) => {
     vbuffer.data;
   };
 
   let unlock = fun (gl: GL.glT, vbuffer:vertexBuffer) => {
-    GL.(bindBuffer gl GL._ELEMENT_ARRAY_BUFFER vbuffer.buffer);
-    let glData = Uint16Array.(make vbuffer.data);
+    GL.(bindBuffer gl GL._ARRAY_BUFFER vbuffer.buffer);
+    let glData = Uint16Array.(make (Array.map int_of_float vbuffer.data));
     let u = switch vbuffer.usage {
         | StaticUsage => GL._STATIC_DRAW
         | DynamicUsage => GL._DYNAMIC_DRAW
         | ReadableUsage => GL._STATIC_DRAW
     };
-    GL.(bufferData gl GL._ELEMENT_ARRAY_BUFFER glData u);
+    GL.(bufferData gl GL._ARRAY_BUFFER glData u);
   };
 
-  let delete = fun (vbuffer: vertexBuffer) => {
+  let delete = fun (gl: GL.glT, vbuffer: vertexBuffer) => {
     vbuffer.data = Array.make 0 0.0;
     GL.(deleteBuffer gl vbuffer.buffer);
-  }
+  };
 
+  let set = fun (gl: GL.glT, vbuffer: vertexBuffer, offset: int) => {
+    GL.(bindBuffer gl GL._ARRAY_BUFFER vbuffer.buffer);
 
+    Array.iteri (fun i size => {
+      let attributesOffset = i;
+      /* todo size > 4 */
+      /* have to change from i something else after implementing that */
+
+      GL.(enableVertexAttribArray gl (offset + attributesOffset));
+      let offset = Array.get vbuffer.offsets i;
+      GL.(vertexAttribPointer gl (offset + attributesOffset) size GL._FLOAT false vbuffer.myStride offset);
+
+    }) vbuffer.sizes;
+  };
 
 };
