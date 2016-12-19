@@ -3,7 +3,7 @@ open VertexData;
 
 module VertexStructure = {
 
-  type vertexStructure = list VertexElement.vertexElement;
+  type vertexStructure = array VertexElement.vertexElement;
 
   let makeOne = fun (name, vertexData) => {
       let x : VertexElement.vertexElement = {
@@ -11,7 +11,7 @@ module VertexStructure = {
           vertexData
       };
 
-      [x]
+      Array.make 1 x;
   };
 
 }
