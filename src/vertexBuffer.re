@@ -11,8 +11,7 @@ module VertexBuffer = {
   type vertexBuffer = {
     buffer: GL.bufferT,
     mutable data: array float,
-    mySize: int,
-    myStride: int,
+    stride: int,
     sizes: array int,
     offsets: array int,
     usage: usage,
@@ -22,8 +21,7 @@ module VertexBuffer = {
   /* canRead standardmaessig true
     instanceDataStepRate = 0
   */
-  /* new()*/
-  let make = fun(gl: GL.glT, vertexCount: int, structure: VertexStructure.vertexStructure, newUsage: usage, instanceDataStepRate: int , canRead: bool) => {
+  let make = fun (gl: GL.glT, vertexCount: int, structure: VertexStructure.vertexStructure, newUsage: usage, instanceDataStepRate: int , canRead: bool) : vertexBuffer => {
     let structurelength = Array.length structure;
     let stride = 0;
     let sizes = Array.make structurelength 0;
@@ -62,25 +60,24 @@ module VertexBuffer = {
     let foo = ((vertexCount * stride) / 4);
     let data = Array.make foo 0.0;
 
-    let vbuffer:vertexBuffer = {
-      buffer:GL.(createBuffer gl),
-      usage:newUsage,
-      instanceDataStepRate:instanceDataStepRate,
-      mySize:vertexCount,
-      myStride:stride,
-      sizes: sizes,
-      offsets: offsets,
-      data:data
+    {
+      buffer: GL.(createBuffer gl),
+      usage: newUsage,
+      instanceDataStepRate,
+      stride: stride,
+      sizes,
+      offsets,
+      data
     };
-    vbuffer;
   };
 
-  let lock = fun(vbuffer:vertexBuffer)=>{
+  let lock = fun (vbuffer: vertexBuffer) => {
     vbuffer.data;
   };
 
-  let unlock = fun (gl: GL.glT, vbuffer:vertexBuffer) => {
+  let unlock = fun (gl: GL.glT, vbuffer: vertexBuffer) => {
     GL.(bindBuffer gl GL._ARRAY_BUFFER vbuffer.buffer);
+
     let glData = Float32Array.(make vbuffer.data);
     let u = switch vbuffer.usage {
         | StaticUsage => GL._STATIC_DRAW
@@ -106,11 +103,9 @@ module VertexBuffer = {
 
     GL.(enableVertexAttribArray gl (offset + attributesOffset));
     let thisoffset = Array.get vbuffer.offsets i;
-    GL.(vertexAttribPointer gl (offset + attributesOffset) size GL._FLOAT false vbuffer.myStride thisoffset);
+    GL.(vertexAttribPointer gl (offset + attributesOffset) size GL._FLOAT false vbuffer.stride thisoffset);
 
     }) vbuffer.sizes;
  };
-
-
 
 };
