@@ -3,4 +3,13 @@ module Types = {
         | Clockwise
         | CounterClockwise
         | None;
+    type compareMode =
+        | Always
+        | Never
+        | NotEqual
+        | Less
+        | LessEqual
+        | Greater
+        |GreaterEqual;
+
 }

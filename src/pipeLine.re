@@ -11,7 +11,9 @@ module PipeLine = {
         program: GL.programT,
         vertexShader: string,
         fragmentShader: string,
-        inputLayout: array VertexStructure.vertexStructure
+        inputLayout: array VertexStructure.vertexStructure,
+        depthWrite:bool,
+        depthMode:Types.compareMode
     };
 
     let make = fun (gl, inputLayout, vertexShader, fragmentShader) : pipe => {
@@ -19,7 +21,9 @@ module PipeLine = {
         program: GL.(createProgram gl),
         inputLayout,
         vertexShader,
-        fragmentShader
+        fragmentShader,
+        depthWrite:false,
+        depthMode:Always
     };
 
     let compileShader = fun (gl, shaderType, source) => {
