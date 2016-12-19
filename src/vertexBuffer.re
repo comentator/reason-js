@@ -23,13 +23,19 @@ module VertexBuffer = {
     instanceDataStepRate = 0
   */
   /* new()*/
-  let make = fun(gl: GL.glT,vertexCount: int, structure: VertexStructure.vertexStructure, newUsage: usage, instanceDataStepRate: int , canRead: bool) => {
+  let make = fun(gl: GL.glT, vertexCount: int, structure: VertexStructure.vertexStructure, newUsage: usage, instanceDataStepRate: int , canRead: bool) => {
     let stride = 0;
-    let stride =List.fold_left (fun(x) => {
+    /* let stride = List.fold_left (fun(x) => {
               fun (y) => {
-                x
-              }});
+                x 
+              }}) 0 sizes;
+    */
 
+    let stride = List.fold_left (fun acc x => { (acc +  4 * 3) /* todo not just Float3 */ }) 0 structure;
+
+
+    let foo = ((vertexCount * stride) / 4);
+    let data = Array.make foo 0.0;
 
     let vbuffer:vertexBuffer = {
       buffer:GL.(createBuffer gl),
@@ -37,9 +43,9 @@ module VertexBuffer = {
       instanceDataStepRate:instanceDataStepRate,
       mySize:vertexCount,
       myStride:stride,
-      sizes:Array.make vertexCount 0,
+      sizes: Array.make vertexCount 0,
       offsets: Array.make vertexCount 0,
-      data:Array.make (vertexCount*stride)/4 0.0
+      data
     };
     vbuffer;
   };
@@ -48,18 +54,19 @@ module VertexBuffer = {
     vbuffer.data;
   };
 
-  let unlock = fun(vbuffer:vertexBuffer) => {
+  let unlock = fun (gl: GL.glT, vbuffer:vertexBuffer) => {
     GL.(bindBuffer gl GL._ELEMENT_ARRAY_BUFFER vbuffer.buffer);
-    let glData = Uint32Array.(make vbuffer.data);
+    let glData = Uint16Array.(make vbuffer.data);
     let u = switch vbuffer.usage {
         | StaticUsage => GL._STATIC_DRAW
         | DynamicUsage => GL._DYNAMIC_DRAW
         | ReadableUsage => GL._STATIC_DRAW
     };
     GL.(bufferData gl GL._ELEMENT_ARRAY_BUFFER glData u);
-  }
-  let delete = fun(vbuffer:vertexBuffer)=>{
-    GL.(deleteBuffer gl vbuffer);
+  };
+
+  let delete = fun (vbuffer: vertexBuffer) => {
+    GL.(deleteBuffer gl vbuffer.buffer);
   }
 
 };
