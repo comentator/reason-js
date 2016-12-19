@@ -50,7 +50,7 @@ let rec render = fun () => {
     Window.(requestAnimationFrame window render);
 
     Graphics.begin_(gl);
-    let c : Graphics.color = {r: 0.5, g: 0.3, b: 1.0, a: 1.0};
+    let c : Graphics.color = {r: 0.0, g: 0.0, b: 0.0, a: 1.0};
     Graphics.clear(gl, c);
     Graphics.setPipeline(gl, pipe);
     Graphics.setVertexBuffer(gl, vertices);
