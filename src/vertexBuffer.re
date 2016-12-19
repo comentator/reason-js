@@ -24,11 +24,11 @@ module VertexBuffer = {
   */
   /* new()*/
   let make = fun(gl: GL.glT, vertexCount: int, structure: VertexStructure.vertexStructure, newUsage: usage, instanceDataStepRate: int , canRead: bool) => {
-    let structurelength = List.length structure;
+    let structurelength = Array.length structure;
     let stride = 0;
     let sizes = Array.make structurelength 0;
     let offsets = Array.make structurelength 0;
-    let stride = List.fold_left (
+    let stride = Array.fold_left (
       fun acc x => {
         let y : VertexElement.vertexElement = x;
         switch y.vertexData {
@@ -38,14 +38,15 @@ module VertexBuffer = {
           | Float4 => acc + 4*4
         };
       }) 0 structure;
-    let getCurrentOffset = fun(idx) => {
+    let getCurrentOffset = fun(idx,size) => {
       if(idx==0){
         0;
       }else{
-        Array.get offsets idx-1;
+        let co = Array.get offsets idx-1;
+        co+size*4;
       };
     };
-    List.iteri(
+    Array.iteri(
       fun index el => {
         let y : VertexElement.vertexElement = el;
         let size = switch y.vertexData {
@@ -54,7 +55,7 @@ module VertexBuffer = {
           | Float3 => 3
           | Float4 => 4
         };
-        let currentOffset = getCurrentOffset(index);
+        let currentOffset = getCurrentOffset(index,size);
         Array.set sizes index size;
         Array.set offsets index currentOffset;
       }) structure;

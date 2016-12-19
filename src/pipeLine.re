@@ -1,6 +1,7 @@
 open ReasonJs;
 open VertexStructure;
 open Types;
+open VertexElement;
 
 module PipeLine = {
     type pipe = {
@@ -8,16 +9,17 @@ module PipeLine = {
         /* ToDo: more here */
 
         program: GL.programT,
-        vertexStructure: VertexStructure.vertexStructure, /* ToDo: This is actually an array of structures */
+        /* vertexStructure: VertexStructure.vertexStructure, /* ToDo: This is actually an array of structures */ */
         vertexShader: string,
         fragmentShader: string,
+        inputLayout:array VertexStructure.vertexStructure
     };
 
     let make = fun (gl, vertexStructure, vertexShader, fragmentShader) => {
         let x : pipe = {
             cullMode: None,
             program: GL.(createProgram gl),
-            vertexStructure,
+            inputLayout: vertexStructure,
             vertexShader,
             fragmentShader
         };
@@ -33,11 +35,11 @@ module PipeLine = {
 
         log(GL.(getShaderInfoLog gl s));
 
-        /*
-        if (!SystemImpl.gl.getShaderParameter(s, GL.COMPILE_STATUS)) {
+
+        /* if (!SystemImpl.gl.getShaderParameter(s, GL.COMPILE_STATUS)) {
             throw "Could not compile shader:\n" + SystemImpl.gl.getShaderInfoLog(s);
-        }
-        */
+        }; */
+
 
         s
     };
@@ -48,7 +50,18 @@ module PipeLine = {
         let program = p.program;
         GL.(attachShader gl program vertexShader);
         GL.(attachShader gl program fragmentShader);
-
+        Array.fold_left (fun acc vStructure => {
+          let test = Array.fold_left ( fun innerAcc vElement => {
+            let element:VertexElement.vertexElement = vElement;
+            GL.(bindAttribLocation gl program innerAcc vElement.name);
+            if(element.vertexData == Float4x4){
+              innerAcc+4;
+            }else{
+              innerAcc+1;
+            };
+          }) 0 vStructure;
+          acc+test;
+        }) 0 p.inputLayout;
 /*
         for (structure in inputLayout) {
             for (element in structure.elements) {
@@ -64,7 +77,7 @@ module PipeLine = {
 */
         /* this doesn't work with Float4x4 */
         /* ToDo I can't get this compiling: !!! List.mapi (fun (i : int, e : VertexStructure.element) => { GL.(bindAttribLocation gl program i e.name) }) p.vertexStructure; */
-        GL.(bindAttribLocation gl program 0 "pos");
+        /* GL.(bindAttribLocation gl program 0 "pos"); */
 
 
         GL.(linkProgram gl program);
