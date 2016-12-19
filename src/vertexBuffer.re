@@ -5,12 +5,12 @@ open VertexStructure;
 open VertexElement;
 open VertexData;
 
-type float32Array = array float;
+
 module VertexBuffer = {
 
   type vertexBuffer = {
     buffer: GL.bufferT,
-    mutable data: float32Array,
+    mutable data: Float32Array.float32Array,
     mySize: int,
     myStride: int,
     sizes: array int,
@@ -37,31 +37,26 @@ module VertexBuffer = {
           | Float4 => acc + 4*4
         };
       }) 0 structure;
-    /*
-    let vars = {
-        offset:0,
-        index:0
-    }
-    List.iter(
-      fun el => {
-        let size = switch el.vertexData {
+    let getCurrentOffset = fun(idx) => {
+      if(idx==0){
+        0;
+      }else{
+        Array.get offsets idx-1;
+      };
+    };
+    List.iteri(
+      fun index el => {
+        let y : VertexElement.vertexElement = el;
+        let size = switch y.vertexData {
           | Float1 => 1
           | Float2 => 2
           | Float3 => 3
           | Float4 => 4
         };
-        Array.set sizes vars.index size;
-        Array.set offsets vars.index offset;
-        var.offset = switch el.vertexData {
-          | Float1 => 1
-          | Float2 => 2
-          | Float3 => 3
-          | Float4 => 4
-        };
-      } structure
-    );
-    */
-
+        let currentOffset = getCurrentOffset(index);
+        Array.set sizes index size;
+        Array.set offsets index currentOffset;
+      }) structure;
     let foo = ((vertexCount * stride) / 4);
     let data = Array.make foo 0.0;
 
@@ -78,7 +73,7 @@ module VertexBuffer = {
     vbuffer;
   };
 
-  let lock = fun (vbuffer:vertexBuffer) => {
+  let lock = fun(vbuffer:vertexBuffer)=>{
     vbuffer.data;
   };
 
@@ -90,10 +85,11 @@ module VertexBuffer = {
         | DynamicUsage => GL._DYNAMIC_DRAW
         | ReadableUsage => GL._STATIC_DRAW
     };
+
     GL.(bufferData gl GL._ARRAY_BUFFER glData u);
   };
 
-  let delete = fun (gl: GL.glT, vbuffer: vertexBuffer) => {
+  let delete = fun (gl: GL.glT,vbuffer: vertexBuffer) => {
     vbuffer.data = Array.make 0 0.0;
     GL.(deleteBuffer gl vbuffer.buffer);
   };
@@ -102,15 +98,17 @@ module VertexBuffer = {
     GL.(bindBuffer gl GL._ARRAY_BUFFER vbuffer.buffer);
 
     Array.iteri (fun i size => {
-      let attributesOffset = i;
-      /* todo size > 4 */
-      /* have to change from i something else after implementing that */
+    let attributesOffset = i;
+    /* todo size > 4 */
+    /* have to change from i something else after implementing that */
 
-      GL.(enableVertexAttribArray gl (offset + attributesOffset));
-      let offset = Array.get vbuffer.offsets i;
-      GL.(vertexAttribPointer gl (offset + attributesOffset) size GL._FLOAT false vbuffer.myStride offset);
+    GL.(enableVertexAttribArray gl (offset + attributesOffset));
+    let offset = Array.get vbuffer.offsets i;
+    GL.(vertexAttribPointer gl (offset + attributesOffset) size GL._FLOAT false vbuffer.myStride offset);
 
     }) vbuffer.sizes;
-  };
+ };
+
+
 
 };
