@@ -18,6 +18,12 @@ module Date = {
   external getTime : t => int = "" [@@bs.send "getTime"];
 };
 
+module Image = {
+  type t;
+  external make : unit => t = "Image" [@@bs.new];
+  /* external makeWithDimensions: int int => t = "Image" [@@bs.new]; */
+};
+
 /* TODO: maybe remove this. We have Random.float 1.0 in OCaml */
 module Math = {
   external random : unit => float = "Math.random" [@@bs.val];
@@ -103,6 +109,15 @@ module GL = {
   let _STATIC_DRAW : int                    = 0x88E4;
   let _DYNAMIC_DRAW : int                   = 0x88E8;
 
+  let _NEVER : int                          = 0x0200;
+  let _LESS : int                           = 0x0201;
+  let _EQUAL : int                          = 0x0202;
+  let _LEQUAL : int                         = 0x0203;
+  let _GREATER : int                        = 0x0204;
+  let _NOTEQUAL : int                       = 0x0205;
+  let _GEQUAL : int                         = 0x0206;
+  let _ALWAYS : int                         = 0x0207;
+
   /* void clear(GLbitfield mask); */
   external clear : glT => int => unit = "clear" [@@bs.send];
 
@@ -149,15 +164,34 @@ module GL = {
   /* void vertexAttribPointer(GLuint indx, GLint size, GLenum type,
                              GLboolean normalized, GLsizei stride, GLintptr offset); */
   external vertexAttribPointer: glT => int => int => int => bool => int => int => unit = "vertexAttribPointer" [@@bs.send];
+  /*  void gl.depthFunc(glenum func); */
+  external depthFunc: glT => int => unit = "depthFunc" [@@bs.send];
+
+  external depthMask: glT => bool => bool = "depthMask"[@@bs.send];
 };
 
 module Document = {
   type element;
   external getElementById : string => element = "document.getElementById" [@@bs.val];
+  external appendToBody : element => 'element = "document.body.appendChild" [@@bs.val];
   external appendChild : element => 'element => unit = "appendChild" [@@bs.send];
+  external createElement : string => element = "document.createElement" [@@bs.val];
 
   /* Should be on CanvasElement */
   external getContext : element => string => GL.glT = "getContext" [@@bs.send];
+};
+
+module CanvasElement = {
+  type canvas;
+  let make = fun () => {
+    let canvas = Document.(createElement "canvas");
+    canvas;
+  };
+  external getContext : Document.element => string => GL.glT = "getContext" [@@bs.send];
+};
+
+module WebGLRenderingContext = {
+  type webGLRenderingContext;
 };
 
 external log: string => unit = "console.log" [@@bs.val];
