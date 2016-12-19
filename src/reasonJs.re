@@ -139,6 +139,13 @@ module GL = {
 
   /* void drawElements(GLenum mode, GLsizei count, GLenum type, GLintptr offset); */
   external drawElements: glT => int => int => int => int => unit = "drawElements" [@@bs.send];
+
+
+  /* void enableVertexAttribArray(GLuint index); */
+  external enableVertexAttribArray: glT => int => unit = "enableVertexAttribArray" [@@bs.send];
+  /* void vertexAttribPointer(GLuint indx, GLint size, GLenum type,
+                             GLboolean normalized, GLsizei stride, GLintptr offset); */
+  external vertexAttribPointer: glT => int => int => int => bool => int => int => unit = "vertexAttribPointer" [@@bs.send];
 };
 
 module Document = {
