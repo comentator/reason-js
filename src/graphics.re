@@ -1,6 +1,7 @@
 open ReasonJs;
 open VertexStructure;
 open PipeLine;
+open VertexBuffer;
 open IndexBuffer;
 open Types;
 
@@ -54,6 +55,10 @@ module Graphics = {
         pipe.set();
         */
         PipeLine.set(gl, pipe);
+    };
+
+    let setVertexBuffer = fun (gl, vertexBuffer: VertexBuffer.vertexBuffer) => {
+        VertexBuffer.set(gl, vertexBuffer, 0);
     };
 
     let setIndexBuffer = fun (gl, indexBuffer: IndexBuffer.indexBuffer) => {
