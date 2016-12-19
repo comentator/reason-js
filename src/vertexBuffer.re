@@ -24,9 +24,10 @@ module VertexBuffer = {
   */
   /* new()*/
   let make = fun(gl: GL.glT, vertexCount: int, structure: VertexStructure.vertexStructure, newUsage: usage, instanceDataStepRate: int , canRead: bool) => {
+    let structurelength = List.length structure;
     let stride = 0;
-    let sizes = Array.make vertexCount 0;
-    let offsets = Array.make vertexCount 0;
+    let sizes = Array.make structurelength 0;
+    let offsets = Array.make structurelength 0;
     let stride = List.fold_left (
       fun acc x => {
         let y : VertexElement.vertexElement = x;
@@ -103,8 +104,8 @@ module VertexBuffer = {
     /* have to change from i something else after implementing that */
 
     GL.(enableVertexAttribArray gl (offset + attributesOffset));
-    let offset = Array.get vbuffer.offsets i;
-    GL.(vertexAttribPointer gl (offset + attributesOffset) size GL._FLOAT false vbuffer.myStride offset);
+    let thisoffset = Array.get vbuffer.offsets i;
+    GL.(vertexAttribPointer gl (offset + attributesOffset) size GL._FLOAT false vbuffer.myStride thisoffset);
 
     }) vbuffer.sizes;
  };
