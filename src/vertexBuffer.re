@@ -103,9 +103,10 @@ module VertexBuffer = {
       /* todo size > 4 */
       /* have to change from i something else after implementing that */
 
-      GL.(enableVertexAttribArray gl (offset + attributesOffset));
-      let offset = Array.get vbuffer.offsets i;
-      GL.(vertexAttribPointer gl (offset + attributesOffset) size GL._FLOAT false vbuffer.myStride offset);
+
+    GL.(enableVertexAttribArray gl (offset + attributesOffset));
+    let thisoffset = Array.get vbuffer.offsets i;
+    GL.(vertexAttribPointer gl (offset + attributesOffset) size GL._FLOAT false vbuffer.myStride thisoffset);
 
     }) vbuffer.sizes;
   };
