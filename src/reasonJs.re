@@ -155,7 +155,10 @@ module GL = {
   external attachShader: glT => programT => shaderT => unit = "attachShader" [@@bs.send];
   external getShaderInfoLog: glT => shaderT => string = "getShaderInfoLog" [@@bs.send];
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 56d9f442d05f6e601db45ffbec88153055c61484
   /* void drawElements(GLenum mode, GLsizei count, GLenum type, GLintptr offset); */
   external drawElements: glT => int => int => int => int => unit = "drawElements" [@@bs.send];
 

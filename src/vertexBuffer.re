@@ -79,7 +79,10 @@ module VertexBuffer = {
     GL.(bindBuffer gl GL._ARRAY_BUFFER vbuffer.buffer);
 
     let glData = Float32Array.(make vbuffer.data);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 56d9f442d05f6e601db45ffbec88153055c61484
     let u = switch vbuffer.usage {
         | StaticUsage => GL._STATIC_DRAW
         | DynamicUsage => GL._DYNAMIC_DRAW
@@ -89,8 +92,11 @@ module VertexBuffer = {
     GL.(bufferFloatData gl GL._ARRAY_BUFFER glData u);
   };
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 56d9f442d05f6e601db45ffbec88153055c61484
   let delete = fun (gl: GL.glT,vbuffer: vertexBuffer) => {
     vbuffer.data = Array.make 0 0.0;
     GL.(deleteBuffer gl vbuffer.buffer);
@@ -100,10 +106,16 @@ module VertexBuffer = {
     GL.(bindBuffer gl GL._ARRAY_BUFFER vbuffer.buffer);
 
     Array.iteri (fun i size => {
+<<<<<<< HEAD
       let attributesOffset = i;
       /* todo size > 4 */
       /* have to change from i something else after implementing that */
 
+=======
+    let attributesOffset = i;
+    /* todo size > 4 */
+    /* have to change from i something else after implementing that */
+>>>>>>> 56d9f442d05f6e601db45ffbec88153055c61484
 
     GL.(enableVertexAttribArray gl (offset + attributesOffset));
     let thisoffset = Array.get vbuffer.offsets i;
